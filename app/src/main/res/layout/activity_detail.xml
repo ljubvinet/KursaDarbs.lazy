@@ -12,6 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
+        android:inputType="textAutoCorrect|textAutoComplete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,9 +32,10 @@
         android:id="@+id/detailsDoneInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
         android:text="@string/mark_done"
-        app:layout_constraintTop_toBottomOf="@+id/detailsNameInput"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailsNameInput" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -97,15 +99,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/cameraButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginTop="@dimen/default_margin"
-        android:background="@android:drawable/ic_menu_camera"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
 
     <ImageView
         android:id="@+id/imageView"
@@ -115,7 +109,7 @@
         app:layout_constraintBottom_toTopOf="@+id/detailsSave"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cameraButton" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
         android:id="@+id/colorSample"
@@ -126,11 +120,12 @@
 
     <TextView
         android:id="@+id/imageText"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="33dp"
         android:text=""
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/detailsSave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

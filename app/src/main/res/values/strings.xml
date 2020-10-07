@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">KursaDarbsLazy</string>
+    <string name="app_name" translatable="false">Kursa Darbs (Lazy)</string>
 
 
     <string name="button_add">Add</string>
@@ -22,6 +22,8 @@
     <string name="delitem">Delete item</string>
     <string name="deleteditem">Item deleted</string>
     <string name="edititem">Edit Item</string>
+    <string name="title">title</string>
     <string name="show_completed">Show only completed items</string>
     <string name="about">About this amazing app</string>
+    <string name="about_text">Aplikācija izstrādāta Pagājušās ēras 2020., bet mūsu, post-pandēmijas ēras, pirmajā gadā;\nar alu, negulētām naktīm un māti gūgli spēcināta.\nPaldies pasniedzējiem! Pasaki Tu arī!\n(hint)Klikšķināt uz vārda...</string>
 </resources>

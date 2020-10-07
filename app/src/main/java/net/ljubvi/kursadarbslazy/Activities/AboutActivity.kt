@@ -5,10 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils.split
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_about.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_lecturer.*
 
 import net.ljubvi.kursadarbslazy.DataClasses.Lecturer
 import net.ljubvi.kursadarbslazy.LecturerClickListener
@@ -26,6 +23,11 @@ class AboutActivity : AppCompatActivity(), LecturerClickListener {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
+
+        getActionBar()?.setDisplayHomeAsUpEnabled(true)
+        adapter = LecturerRecyclerAdapter(listener = this, items = items)
+        lecturers.adapter = adapter
+
         val f = mutableListOf(resources.getStringArray(R.array.lecturers))
 
         var item:Lecturer
@@ -34,18 +36,10 @@ class AboutActivity : AppCompatActivity(), LecturerClickListener {
             for (string in strings) {
                val f1 = split(string,",")
                     item = Lecturer(f1[0],f1[1])
-                    items.add(item)
+                items.add(item)
             }
-
-
         }
-
-        adapter = LecturerRecyclerAdapter(listener = this, items = items)
-        lecturers.adapter = adapter
-
-
-
-
+        adapter.notifyDataSetChanged()
     }
 
      fun sendSMS(number:String, body:String) {
@@ -56,10 +50,7 @@ class AboutActivity : AppCompatActivity(), LecturerClickListener {
     }
 
 
-override fun itemClicked(item:Lecturer){
-    Toast.makeText(this,item.phone,Toast.LENGTH_SHORT).show()
-    sendSMS(item.phone,"Paldies!!!")
-}
-
-    // sendSMS("+37126366670","Tests2")
+    override fun itemClicked(item:Lecturer){
+        sendSMS(item.phone,"Paldies!!! :)")
+    }
 }

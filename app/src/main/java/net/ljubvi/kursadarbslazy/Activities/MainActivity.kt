@@ -3,7 +3,6 @@ package net.ljubvi.kursadarbslazy.Activities
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -20,7 +19,6 @@ import net.ljubvi.kursadarbslazy.DataClasses.ToDoItem
 import net.ljubvi.kursadarbslazy.Database
 import net.ljubvi.kursadarbslazy.R
 import net.ljubvi.kursadarbslazy.ToDoItemRecyclerAdapter
-
 
 
 class MainActivity : AppCompatActivity(), AdapterClickListener {
@@ -47,10 +45,8 @@ class MainActivity : AppCompatActivity(), AdapterClickListener {
 
         refresh("auto")
 
-
         adapter = ToDoItemRecyclerAdapter(this, items)
         mainItems.adapter = adapter
-
 
         newbutton.setOnClickListener{
             rotateButton(it)
@@ -73,17 +69,15 @@ class MainActivity : AppCompatActivity(), AdapterClickListener {
         if(refreshType == "full") {
             items.addAll(db.ToDoItemDao().getAll())
         }
+        if (refreshType == "limited"){
+            items.addAll(db.ToDoItemDao().getIncomplete())
+        }
         if (refreshType == "auto"){
-
-            val sharedPref = this.getSharedPreferences(PREFERENCES_FILE,Context.MODE_PRIVATE)
+            val sharedPref = this.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE)
             val defaultValue:Boolean = false
             val set = sharedPref.getBoolean(getString(R.string.show_unmarked), defaultValue)
 
-
-            if (set==true) refresh("limited") else refresh("full")
-        }
-        if (refreshType == "limited"){
-            items.addAll(db.ToDoItemDao().getIncomplete())
+            if (set==true)  refresh("limited") else  refresh("full")
         }
     }
 
@@ -111,8 +105,7 @@ class MainActivity : AppCompatActivity(), AdapterClickListener {
             val s:String? = u.lastPathSegment
             this.deleteFile(s)
         }
-
-    db.ToDoItemDao().delete(item)
+        db.ToDoItemDao().delete(item)
     }
 
     override fun doneClicked(item: ToDoItem, position: Int) {
@@ -147,8 +140,11 @@ class MainActivity : AppCompatActivity(), AdapterClickListener {
     }
 
 
+
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.settings_menu, menu)
+
         return true
     }
 
@@ -156,12 +152,7 @@ class MainActivity : AppCompatActivity(), AdapterClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.incompleteToggle -> {
-                item.isChecked = !item.isChecked
-                if (item.isChecked) refresh("limited") else refresh("full")
-                adapter.notifyDataSetChanged()
-                true
-            }
+
             R.id.about -> {
                 val intent = Intent(this, AboutActivity::class.java)
                 startActivity(intent)

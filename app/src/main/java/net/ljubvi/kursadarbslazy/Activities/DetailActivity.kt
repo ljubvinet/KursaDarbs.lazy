@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 
@@ -19,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.android.synthetic.main.item_todo.view.*
 
 import net.ljubvi.kursadarbslazy.Activities.MainActivity.Companion.EXTRA_ID
 import net.ljubvi.kursadarbslazy.Activities.MainActivity.Companion.EXTRA_NEW
@@ -39,17 +42,11 @@ class DetailActivity : AppCompatActivity() {
         const val REQUEST_IMAGE_CAPTURE = 1
         private lateinit var photoUri: Uri
     }
-    override fun onRequestPermissionsResult( requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && PackageManager.PERMISSION_GRANTED in grantResults) {
-            takePicture()
-            }
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-
+        getActionBar()?.setDisplayHomeAsUpEnabled(true)
         val color_array = mutableListOf<Int>(
             ContextCompat.getColor(this,R.color.green),
             ContextCompat.getColor(this,R.color.blue),
@@ -59,7 +56,7 @@ class DetailActivity : AppCompatActivity() {
 
 
         val id = intent.getLongExtra(EXTRA_ID, -1)
-
+        detailsNameInput.requestFocus()
 
         if (id.toString()=="-1") { // new entry to be added
             val item = ToDoItem("", false)
@@ -128,7 +125,7 @@ class DetailActivity : AppCompatActivity() {
 
         }
 
-        cameraButton.setOnClickListener{
+        imageView.setOnClickListener{
 
 
 
@@ -141,11 +138,9 @@ class DetailActivity : AppCompatActivity() {
                 ActivityCompat.requestPermissions(this, permissions,1)
             }
 
-
-
-
-
         }
+
+
 
 
 
@@ -170,6 +165,9 @@ class DetailActivity : AppCompatActivity() {
             colorSample.setBackgroundColor(ContextCompat.getColor(this,R.color.yellow))
         }
                 // end of stupid part
+
+
+
 
     }
 
@@ -204,10 +202,38 @@ class DetailActivity : AppCompatActivity() {
                 val u:Uri = imageText.text.toString().toUri()
                 val s:String? = u.lastPathSegment
 
-                this.deleteFile(s)
+
             }
             imageText.text = photoUri.toString()
 
+
+        }
+    }
+
+    override fun onRequestPermissionsResult( requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && PackageManager.PERMISSION_GRANTED in grantResults) {
+            takePicture()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.share_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.shareItem -> {
+                val sendIntent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, detailsNameInput.text.toString())
+                    type = "text/plain"}
+                startActivity(sendIntent)
+
+                true
+            } else -> {
+                false
+            }
 
         }
     }

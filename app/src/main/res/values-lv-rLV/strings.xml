@@ -19,4 +19,6 @@
     <string name="show_completed">Rādīt tikai padarītos</string>
     <string name="about">Par šo lielisko aplikāciju</string>
     <string name="deleteditem">Vienums izdzēsts</string>
+    <string name="about_text">Aplikācija izstrādāta Pagājušās ēras 2020., bet mūsu, post-pandēmijas ēras, pirmajā gadā;\nar alu, negulētām naktīm un māti gūgli spēcināta.\nPaldies pasniedzējiem! Pasaki Tu arī!\n(hint)Klikšķināt uz vārda...</string>
+    <string name="title">title</string>
 </resources>

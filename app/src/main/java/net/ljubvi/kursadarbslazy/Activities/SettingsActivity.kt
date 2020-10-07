@@ -13,6 +13,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+        getActionBar()?.setDisplayHomeAsUpEnabled(true)
         val PREFERENCES_FILE = "net.ljubvi.lazy.kursadarbs.settings"
         val sharedPref = this?.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE)
         val defaultValue:Boolean = false
