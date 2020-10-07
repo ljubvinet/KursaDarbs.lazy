@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KursaDarbsLazy</string>
+    <string name="button_add">Pievienot</string>
+    <string name="btn_save">Saglabāt</string>
+    <string name="enter">Ievadīt</string>
+    <string name="cancel">Atcelt</string>
+    <string name="GREEN">Zaļš</string>
+    <string name="BLUE">Zils</string>
+    <string name="RED">Sarkans</string>
+    <string name="YELLOW">Dzeltens</string>
+    <string name="setting">Ielādēt tikai neizdarītās lietas</string>
+    <string name="must_enter">Kaut kas ir jāievada!</string>
+    <string name="input">Ievadiet darāmo lietu šeit:</string>
+    <string name="quick_input">Ātrā ievade</string>
+    <string name="mark_done">Atzīmēt kā izdarītu</string>
+    <string name="delitem">Dzēst vienumu</string>
+    <string name="edititem">Labot vienumu</string>
+    <string name="show_completed">Rādīt tikai padarītos</string>
+    <string name="about">Par šo lielisko aplikāciju</string>
+    <string name="deleteditem">Vienums izdzēsts</string>
+</resources>

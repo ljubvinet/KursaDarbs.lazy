@@ -11,29 +11,29 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_todo.view.*
-import net.ljubvi.kursadarbslazy.DataClasses.ShoppingItem
+import net.ljubvi.kursadarbslazy.DataClasses.ToDoItem
 
 class ToDoItemRecyclerAdapter(
     private val listener: AdapterClickListener,
-    private val items: MutableList<ShoppingItem>
+    private val items: MutableList<ToDoItem>
 ) :
-    RecyclerView.Adapter<ToDoItemRecyclerAdapter.ShoppingViewHolder>() {
+    RecyclerView.Adapter<ToDoItemRecyclerAdapter.ToDoViewHolder>() {
 
-    class ShoppingViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    class ToDoViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_todo, parent, false)
 
-        return ShoppingViewHolder(view)
+        return ToDoViewHolder(view)
     }
 
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: ShoppingViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ToDoViewHolder, position: Int) {
         val item = items[position]
         val context = holder.itemView.context
 
@@ -70,7 +70,7 @@ class ToDoItemRecyclerAdapter(
                         listener.deleteClicked(item)
                         items.removeAt(position)
                         notifyDataSetChanged()
-                        Snackbar.make(it,"Item Deleted", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(it,R.string.deleteditem, Snackbar.LENGTH_SHORT).show()
                     }
                     R.id.editButton -> {
                         listener.itemClicked(item)

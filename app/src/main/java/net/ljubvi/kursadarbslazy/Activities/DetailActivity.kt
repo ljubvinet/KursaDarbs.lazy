@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import android.widget.Toast
 
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -22,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_detail.*
 import net.ljubvi.kursadarbslazy.Activities.MainActivity.Companion.EXTRA_ID
 import net.ljubvi.kursadarbslazy.Activities.MainActivity.Companion.EXTRA_NEW
 import net.ljubvi.kursadarbslazy.App
-import net.ljubvi.kursadarbslazy.DataClasses.ShoppingItem
+import net.ljubvi.kursadarbslazy.DataClasses.ToDoItem
 import net.ljubvi.kursadarbslazy.R
 import java.io.File
 import java.io.IOException
@@ -61,69 +62,65 @@ class DetailActivity : AppCompatActivity() {
 
 
         if (id.toString()=="-1") { // new entry to be added
-            val item = ShoppingItem("", false)
+            val item = ToDoItem("", false)
             colorSample.setBackgroundColor(color_array[3])
             colorText.text = "3"
             detailsSave.setOnClickListener {
+                if(detailsNameInput.text.toString()!="") {
                 var hasimage = false
-                var imageuri = imageText.text.toString()
+                val imageuri = imageText.text.toString()
+                if (imageuri != "") { hasimage = true }
 
-                if (imageuri !=""){
-
-                    hasimage = true
-                }
-
-                item.uid = db.shoppingItemDao().insertAll(
-                    ShoppingItem(
+                item.uid = db.ToDoItemDao().insertAll(
+                    ToDoItem(
                         name = detailsNameInput.text.toString(),
 
                         color = colorText.text.toString(),
                         done = detailsDoneInput.isChecked,
                         hasImage = hasimage,
                         imageUri = imageuri
-                    )).first()
+                    )
+                ).first()
 
                 val intent = Intent().putExtra(EXTRA_ID, item.uid)
-                    .putExtra(EXTRA_NEW,id.toLong())
+                    .putExtra(EXTRA_NEW, id.toLong())
                 setResult(RESULT_OK, intent)
                 finish()
+            }else Toast.makeText(this,R.string.must_enter,Toast.LENGTH_SHORT).show()
             }
         } else {
-            val item = db.shoppingItemDao()?.getItemById(id)
-
+            val item = db.ToDoItemDao().getItemById(id)
             detailsNameInput.setText(item.name)
             if (item.hasImage){
                 imageText.text = item.imageUri
                 imageView.setImageURI(item.imageUri.toUri())
             }
             colorText.setText(item.color.toString())
-            val buttonList = mutableListOf<View>(greenButton,blueButton,redButton,yellowButton)
-            if(item.color != "") colorSample.setBackgroundColor(color_array[item.color.toInt()])
 
+            if(item.color != "") colorSample.setBackgroundColor(color_array[item.color.toInt()])
             detailsDoneInput.isChecked = item.done
 
             detailsSave.setOnClickListener {
-                var hasimage = false
-                var imageuri = imageText.text.toString()
-
-                if (imageuri !=""){
-
-                    hasimage = true
-                }
-
-                db.shoppingItemDao().update(
-                    item.copy(
-                        name = detailsNameInput.text.toString(),
-                        color = colorText.text.toString(),
-                        done = detailsDoneInput.isChecked,
-                        hasImage = hasimage,
-                        imageUri = imageuri
+                if(detailsNameInput.text.toString()!="") {
+                    var hasimage = false
+                    val imageuri = imageText.text.toString()
+                    if (imageuri != "") {
+                        hasimage = true
+                    }
+                    db.ToDoItemDao().update(
+                        item.copy(
+                            name = detailsNameInput.text.toString(),
+                            color = colorText.text.toString(),
+                            done = detailsDoneInput.isChecked,
+                            hasImage = hasimage,
+                            imageUri = imageuri
+                        )
                     )
-                )
-                val intent = Intent().putExtra(EXTRA_ID, item.uid)
-                    .putExtra(EXTRA_NEW,0)
-                setResult(RESULT_OK, intent)
-                finish()
+                    val intent = Intent().putExtra(EXTRA_ID, item.uid)
+                        .putExtra(EXTRA_NEW, 0)
+                    setResult(RESULT_OK, intent)
+                    finish()
+                } else Toast.makeText(this,R.string.must_enter,Toast.LENGTH_SHORT).show()
 
 
             }
@@ -207,7 +204,7 @@ class DetailActivity : AppCompatActivity() {
                 val u:Uri = imageText.text.toString().toUri()
                 val s:String? = u.lastPathSegment
 
-                val r = this.deleteFile(s)
+                this.deleteFile(s)
             }
             imageText.text = photoUri.toString()
 

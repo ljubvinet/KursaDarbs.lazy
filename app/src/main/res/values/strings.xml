@@ -20,5 +20,8 @@
     <string name="show_unmarked" translatable="false">net.ljubvi.lazy.kursadarbs.show_unmarked</string>
     <string name="mark_done">Mark item as done</string>
     <string name="delitem">Delete item</string>
+    <string name="deleteditem">Item deleted</string>
     <string name="edititem">Edit Item</string>
+    <string name="show_completed">Show only completed items</string>
+    <string name="about">About this amazing app</string>
 </resources>

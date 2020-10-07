@@ -6,7 +6,7 @@ import androidx.room.Room
 class App : Application() {
 
     val db by lazy {
-        Room.databaseBuilder(this, ShoppingDatabase::class.java, "ToDo-db")
+        Room.databaseBuilder(this, ToDoDatabase::class.java, "ToDo-db")
             .allowMainThreadQueries()
             .build()
     }

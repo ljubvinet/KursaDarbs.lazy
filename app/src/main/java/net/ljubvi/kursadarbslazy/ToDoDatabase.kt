@@ -4,22 +4,22 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import net.ljubvi.kursadarbslazy.DataClasses.ShoppingItem
-import net.ljubvi.kursadarbslazy.DataClasses.ShoppingItemDao
+import net.ljubvi.kursadarbslazy.DataClasses.ToDoItem
+import net.ljubvi.kursadarbslazy.DataClasses.ToDoItemDao
 
-@Database(version = 1, entities = [ShoppingItem::class])
-abstract class ShoppingDatabase : RoomDatabase() {
+@Database(version = 1, entities = [ToDoItem::class])
+abstract class ToDoDatabase : RoomDatabase() {
 
-    abstract fun shoppingItemDao(): ShoppingItemDao
+    abstract fun ToDoItemDao(): ToDoItemDao
 
 }
 
 object Database {
 
-    private var instance: ShoppingDatabase? = null
+    private var instance: ToDoDatabase? = null
 
     fun getInstance(context: Context) = instance ?: Room.databaseBuilder(
-        context.applicationContext, ShoppingDatabase::class.java, "ToDo-db"
+        context.applicationContext, ToDoDatabase::class.java, "ToDo-db"
     )
         .allowMainThreadQueries()
         .build()

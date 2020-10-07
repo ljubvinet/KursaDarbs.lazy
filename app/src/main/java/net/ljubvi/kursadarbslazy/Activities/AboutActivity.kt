@@ -32,8 +32,8 @@ class AboutActivity : AppCompatActivity(), LecturerClickListener {
 
         for (strings in f) {
             for (string in strings) {
-               var f = split(string,",")
-                    item = Lecturer(f[0],f[1])
+               val f1 = split(string,",")
+                    item = Lecturer(f1[0],f1[1])
                     items.add(item)
             }
 

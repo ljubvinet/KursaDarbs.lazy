@@ -2,17 +2,17 @@ package net.ljubvi.kursadarbslazy
 
 import android.view.View
 import net.ljubvi.kursadarbslazy.DataClasses.Lecturer
-import net.ljubvi.kursadarbslazy.DataClasses.ShoppingItem
+import net.ljubvi.kursadarbslazy.DataClasses.ToDoItem
 
 interface AdapterClickListener {
 
-    fun itemClicked(item: ShoppingItem)
+    fun itemClicked(item: ToDoItem)
 
-    fun deleteClicked(item: ShoppingItem)
+    fun deleteClicked(item: ToDoItem)
 
-    fun doneClicked(item: ShoppingItem, position: Int)
+    fun doneClicked(item: ToDoItem, position: Int)
 
-    fun itemLongClicked(item: ShoppingItem, position: Int, viem: View)
+    fun itemLongClicked(item: ToDoItem, position: Int, viem: View)
 
 }
 

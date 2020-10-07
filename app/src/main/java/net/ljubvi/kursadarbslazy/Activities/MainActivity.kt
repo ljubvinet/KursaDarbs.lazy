@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import kotlinx.android.synthetic.main.activity_main.*
 import net.ljubvi.kursadarbslazy.AdapterClickListener
-import net.ljubvi.kursadarbslazy.DataClasses.ShoppingItem
+import net.ljubvi.kursadarbslazy.DataClasses.ToDoItem
 import net.ljubvi.kursadarbslazy.Database
 import net.ljubvi.kursadarbslazy.R
 import net.ljubvi.kursadarbslazy.ToDoItemRecyclerAdapter
@@ -25,10 +25,19 @@ import net.ljubvi.kursadarbslazy.ToDoItemRecyclerAdapter
 
 class MainActivity : AppCompatActivity(), AdapterClickListener {
 
+    companion object {
+        const val EXTRA_ID = "net.ljubvi.lazy.kursadarbs.item_id"
+        const val EXTRA_NEW = "net.ljubvi.lazy.kursadarbs.item_new"
+        const val REQUEST_CODE_DETAILS = 1234
+        const val REQUEST_CODE_SETTINGS = 4
+        const val PREFERENCES_FILE = "net.ljubvi.lazy.kursadarbs.settings"
+
+    }
+
     private val refreshType = listOf("full", "visible")
 
     private val db get() = Database.getInstance(this)
-    private val items = mutableListOf<ShoppingItem>()
+    private val items = mutableListOf<ToDoItem>()
     private lateinit var adapter: ToDoItemRecyclerAdapter
 
 
@@ -62,11 +71,11 @@ class MainActivity : AppCompatActivity(), AdapterClickListener {
     public fun refresh(refreshType: String = "auto"){
         items.clear()
         if(refreshType == "full") {
-            items.addAll(db.shoppingItemDao().getAll())
+            items.addAll(db.ToDoItemDao().getAll())
         }
         if (refreshType == "auto"){
 
-            val sharedPref = this?.getSharedPreferences(PREFERENCES_FILE,Context.MODE_PRIVATE)
+            val sharedPref = this.getSharedPreferences(PREFERENCES_FILE,Context.MODE_PRIVATE)
             val defaultValue:Boolean = false
             val set = sharedPref.getBoolean(getString(R.string.show_unmarked), defaultValue)
 
@@ -74,41 +83,41 @@ class MainActivity : AppCompatActivity(), AdapterClickListener {
             if (set==true) refresh("limited") else refresh("full")
         }
         if (refreshType == "limited"){
-            items.addAll(db.shoppingItemDao().getIncomplete())
+            items.addAll(db.ToDoItemDao().getIncomplete())
         }
     }
 
     private fun appendItem(itemName: String) {
-        val item = ShoppingItem(itemName, false)
-        item.uid = db.shoppingItemDao().insertAll(item).first()
+        val item = ToDoItem(itemName, false)
+        item.uid = db.ToDoItemDao().insertAll(item).first()
         items.add(item)
         items.sortByDescending { it.uid }
         adapter.notifyDataSetChanged()
     }
 
-    override fun itemClicked(item: ShoppingItem) {
+    override fun itemClicked(item: ToDoItem) {
         val intent = Intent(this, DetailActivity::class.java)
             .putExtra(EXTRA_ID, item.uid)
         startActivityForResult(intent, REQUEST_CODE_DETAILS)
     }
 
-    override fun itemLongClicked(item: ShoppingItem, position: Int, viem: View) {
+    override fun itemLongClicked(item: ToDoItem, position: Int, viem: View) {
     }
 
 
-    override fun deleteClicked(item: ShoppingItem) {
+    override fun deleteClicked(item: ToDoItem) {
         if (item.hasImage){
             val u:Uri = item.imageUri.toUri()
             val s:String? = u.lastPathSegment
-            val r = this.deleteFile(s)
+            this.deleteFile(s)
         }
 
-    db.shoppingItemDao().delete(item)
+    db.ToDoItemDao().delete(item)
     }
 
-    override fun doneClicked(item: ShoppingItem, position: Int) {
+    override fun doneClicked(item: ToDoItem, position: Int) {
         item.done = !item.done
-        db.shoppingItemDao().update(item)
+        db.ToDoItemDao().update(item)
         items.clear()
         refresh()
         adapter.notifyDataSetChanged()
@@ -119,14 +128,13 @@ class MainActivity : AppCompatActivity(), AdapterClickListener {
         if (requestCode == REQUEST_CODE_DETAILS && resultCode == RESULT_OK && data != null) {
             val id = data.getLongExtra(EXTRA_ID, 0)
             val new = data.getLongExtra(EXTRA_NEW, 0)
-            val item = db.shoppingItemDao().getItemById(id)
-            println(data)
+
+
             if (new.toString()=="-1") { // if new item was created, we need to add it to list
-                items.add(item)
-                refresh()
+                refresh("auto")
+                adapter.notifyDataSetChanged()
             }else{ // if existing item was edited, we need to update it
-                val position = items.indexOfFirst { it.uid == item.uid }
-                items[position] = item
+                refresh("auto")
                 adapter.notifyDataSetChanged()
             }
         }
@@ -138,14 +146,6 @@ class MainActivity : AppCompatActivity(), AdapterClickListener {
 
     }
 
-    companion object {
-        const val EXTRA_ID = "net.ljubvi.lazy.kursadarbs.item_id"
-        const val EXTRA_NEW = "net.ljubvi.lazy.kursadarbs.item_new"
-        const val REQUEST_CODE_DETAILS = 1234
-        const val REQUEST_CODE_SETTINGS = 4
-        const val PREFERENCES_FILE = "net.ljubvi.lazy.kursadarbs.settings"
-
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.settings_menu, menu)
@@ -179,7 +179,7 @@ class MainActivity : AppCompatActivity(), AdapterClickListener {
 
     private fun quickInput(){
         val alert: AlertDialog.Builder = AlertDialog.Builder(this)
-        var textInput: EditText? = EditText(this)
+        val textInput: EditText? = EditText(this)
             alert.setMessage(R.string.input)
                 .setTitle(R.string.quick_input)
                 .setView(textInput)

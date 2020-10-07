@@ -6,7 +6,7 @@
         android:id="@+id/incompleteToggle"
         android:checkable="true"
         android:checked="true"
-        android:title="Show Completed Items"
+        android:title="@string/show_completed"
         app:actionLayout="@layout/switch_item"
         app:showAsAction="withText"></item>
     <item
@@ -16,6 +16,6 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/about"
-        android:title="About this amazing app..." />
+        android:title="@string/about" />
 
 </menu>
