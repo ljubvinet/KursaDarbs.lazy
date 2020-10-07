@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+            <resources>
+
+
+    <string-array name="shopping_colors">
+        <item>@string/GREEN</item>
+        <item>@string/BLUE</item>
+        <item>@string/RED</item>
+        <item>@string/YELLOW</item>
+    </string-array>
+
+
+    <string-array name="lecturers">
+        <item>Romāns Strančevskis,+37126103552</item>
+        <item>Andrii Koniushenko,+37120675869</item>
+        <item>Fjodors Pohodņevs,+37127474286</item>
+        <item>Vladimir Kotov,+37128664890</item>
+    </string-array>
+</resources>
